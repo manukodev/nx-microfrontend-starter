@@ -3,10 +3,15 @@ import styles from './app.module.scss';
 
 import NxWelcome from './nx-welcome';
 
-export function App() {
+type Props = {
+  initCount?: number;
+};
+
+export function App(props: Props) {
   return (
     <div>
-      <NxWelcome title="remote" />
+      initCount: {props?.initCount || 'no init count'}
+      <NxWelcome title="remote new xcc" />
     </div>
   );
 }

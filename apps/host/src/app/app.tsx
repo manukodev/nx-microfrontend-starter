@@ -31,7 +31,7 @@ export function App() {
           path="/remote"
           element={
             <div>
-              <Remote />
+              <Remote initCount={4} />
               <Link to="/">Click here to go back to root page.</Link>
             </div>
           }
