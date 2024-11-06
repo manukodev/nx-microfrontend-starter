@@ -1,0 +1,84 @@
+{
+  "name": "webpack-host",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/webpack-host/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "swc",
+        "outputPath": "dist/apps/webpack-host",
+        "index": "apps/webpack-host/src/index.html",
+        "baseHref": "/",
+        "main": "apps/webpack-host/src/main.ts",
+        "tsConfig": "apps/webpack-host/tsconfig.app.json",
+        "assets": [
+          "apps/webpack-host/src/favicon.ico",
+          "apps/webpack-host/src/assets"
+        ],
+        "styles": ["apps/webpack-host/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "apps/webpack-host/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/webpack-host/src/environments/environment.ts",
+              "with": "apps/webpack-host/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "webpack-host:build",
+        "hmr": true,
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "webpack-host:build:development"
+        },
+        "production": {
+          "buildTarget": "webpack-host:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "webpack-host:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "webpack-host:serve:development"
+        },
+        "production": {
+          "serveTarget": "webpack-host:serve:production"
+        }
+      }
+    }
+  }
+}
